@@ -1,0 +1,43 @@
+# Arquivos de cache e compilados do Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Cache e relatórios de teste (Pytest, Coverage, Ruff)
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+.ruff_cache/
+
+# Pacotes e distribuição (Setuptools, pip)
+build/
+dist/
+*.egg-info/
+wheels/
+pip-cache/
+
+# Ambientes virtuais (venv, env, .venv)
+venv/
+.venv/
+env/
+.env/
+*_env/
+
+# Arquivos de configuração de IDE e Editor
+# Ignora configurações locais do VS Code, mas permite
+# que arquivos do dev container (como devcontainer.json) sejam enviados
+.vscode/
+
+# Arquivos de Sistema Operacional (macOS, Windows, Linux)
+.DS_Store
+Thumbs.db
+desktop.ini
+*~
+
+# Arquivos de segredos e ambiente
+# NUNCA envie seus segredos ou chaves de API!
+.env
+.env.*
+!*.env.example

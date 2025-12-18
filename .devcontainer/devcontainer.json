@@ -1,0 +1,26 @@
+{
+  "name": "Coreback20252 Dev Container",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/home/devuser/app",
+  "remoteUser": "devuser",
+  "settings": {
+    "terminal.integrated.defaultProfile.linux": "bash",
+    "python.defaultInterpreterPath": "/usr/local/bin/python",
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "[python]": {
+      "editor.defaultFormatter": "charliermarsh.ruff"
+    }
+  },
+  "mounts": [
+    "source=${localWorkspaceFolder},target=/home/devuser/app,type=bind"
+  ],
+  "postCreateCommand": "pip install -e .[test,lint]",
+  "extensions": [
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "ms-vscode.makefile-tools",
+    "charliermarsh.ruff"
+  ]
+}
