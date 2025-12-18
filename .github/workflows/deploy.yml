@@ -46,10 +46,10 @@ jobs:
 
       - name: Build Docker image
         working-directory: ./
-        run: docker build -f Dockerfile.prod -t ${{ secrets.DOCKER_HUB_USERNAME }}/coreback202502:latest .
+        run: docker build -f Dockerfile.prod -t ${{ secrets.DOCKER_HUB_USERNAME }}/api_backend:latest .
 
       - name: Push to Docker Hub
-        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/coreback202502:latest
+        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/api_backend:latest
 
       - name: Send deploy hook to Render
         run: |
