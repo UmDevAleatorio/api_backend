@@ -5,11 +5,14 @@ from ..entities.product import Product
 from ..repositories.i_product_repository import IProductRepository
 from ..value_objects import Name, Photo, Price
 
+
 @dataclasses.dataclass
 class UpdateProduct:
     repository: IProductRepository
 
-    async def execute(self, id: str, name: str, price: float, photo: str, stock: int) -> Optional[Product]:
+    async def execute(
+        self, id: str, name: str, price: float, photo: str, stock: int
+    ) -> Optional[Product]:
         product = await self.repository.find_by_id(id)
         if not product:
             return None
@@ -20,8 +23,8 @@ class UpdateProduct:
             name=Name(name),
             price=Price(price),
             photo=Photo(photo),
-            stock=stock
+            stock=stock,
         )
-        
+
         await self.repository.update(updated_product)
         return updated_product

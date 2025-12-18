@@ -1,7 +1,9 @@
 from uuid import uuid4
-from ..repositories.i_user_repository import IUserRepository
+
 from ..entities.user import User
-from ..value_objects import Name, Email, Password
+from ..repositories.i_user_repository import IUserRepository
+from ..value_objects import Email, Name, Password
+
 
 class RegisterUser:
     def __init__(self, user_repository: IUserRepository):
@@ -16,11 +18,8 @@ class RegisterUser:
         # 2. Cria e Salva
         user_id = str(uuid4())
         new_user = User(
-            id=user_id,
-            name=Name(name),
-            email=Email(email),
-            password=Password(password)
+            id=user_id, name=Name(name), email=Email(email), password=Password(password)
         )
-        
+
         await self.user_repository.save(new_user)
         return new_user

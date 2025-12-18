@@ -1,6 +1,7 @@
 import pytest
 from httpx import AsyncClient
 
+
 @pytest.mark.asyncio
 async def test_register_user(client: AsyncClient):
     # ROTA CORRETA: /auth/register
@@ -9,13 +10,14 @@ async def test_register_user(client: AsyncClient):
         json={
             "name": "New User",
             "email": "new@example.com",
-            "password": "Password123!", # Senha Forte
+            "password": "Password123!",  # Senha Forte
         },
     )
     assert response.status_code == 201
     data = response.json()
     assert data["name"] == "New User"
     assert "id" in data
+
 
 @pytest.mark.asyncio
 async def test_login_user(client: AsyncClient):
@@ -42,6 +44,7 @@ async def test_login_user(client: AsyncClient):
     assert data["token_type"] == "bearer"
     assert "access_token" in data
 
+
 @pytest.mark.asyncio
 async def test_get_me(client: AsyncClient):
     await client.post(
@@ -59,10 +62,9 @@ async def test_get_me(client: AsyncClient):
     token = login_res.json()["access_token"]
 
     response = await client.get(
-        "/users/me",
-        headers={"Authorization": f"Bearer {token}"}
+        "/users/me", headers={"Authorization": f"Bearer {token}"}
     )
-    
+
     assert response.status_code == 200
     data = response.json()
     assert data["email"] == "me@example.com"

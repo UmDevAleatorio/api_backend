@@ -1,7 +1,9 @@
 import dataclasses
 from typing import Optional
+
 from ..entities.order import Order
 from ..repositories.i_order_repository import IOrderRepository
+
 
 @dataclasses.dataclass
 class UpdateOrder:
@@ -13,6 +15,6 @@ class UpdateOrder:
             raise ValueError("Order not found")
 
         updated_order = order.update_status(new_status)
-        
+
         await self.repository.update(updated_order)
         return updated_order

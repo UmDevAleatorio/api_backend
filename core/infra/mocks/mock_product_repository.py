@@ -1,6 +1,8 @@
 from typing import List, Optional
+
 from ...domain.entities.product import Product
 from ...domain.repositories.i_product_repository import IProductRepository
+
 
 class MockProductRepository(IProductRepository):
     def __init__(self):

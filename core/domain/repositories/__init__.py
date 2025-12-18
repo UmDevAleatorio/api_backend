@@ -1,3 +1,3 @@
 from .i_order_repository import IOrderRepository
-from .i_user_repository import IUserRepository
 from .i_product_repository import IProductRepository
+from .i_user_repository import IUserRepository

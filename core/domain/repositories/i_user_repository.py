@@ -3,6 +3,7 @@ from typing import Optional
 
 from ..entities.user import User
 
+
 class IUserRepository(ABC):
     @abstractmethod
     async def save(self, user: User) -> None:

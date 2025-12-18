@@ -3,6 +3,7 @@ from typing import List, Optional
 
 from ..entities.order import Order
 
+
 class IOrderRepository(ABC):
     @abstractmethod
     async def save(self, order: Order) -> None:

@@ -1,6 +1,8 @@
 import dataclasses
+
 from ..repositories.i_order_repository import IOrderRepository
 from ..repositories.i_product_repository import IProductRepository
+
 
 @dataclasses.dataclass
 class DeleteOrder:
@@ -11,7 +13,7 @@ class DeleteOrder:
         # 1. Busca o pedido para saber quais itens devolver
         order = await self.order_repository.find_by_id(id)
         if not order:
-             # Se não achar, pode lançar erro ou só retornar (depende da sua preferência)
+            # Se não achar, pode lançar erro ou só retornar (depende da sua preferência)
             return
 
         # 2. Devolve o estoque de cada item

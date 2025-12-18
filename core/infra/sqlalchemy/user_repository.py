@@ -1,10 +1,11 @@
 from typing import Optional
-from sqlalchemy.future import select
+
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
 
 from ...domain.entities.user import User
-from ...domain.value_objects import Email, Name, Password
 from ...domain.repositories.i_user_repository import IUserRepository
+from ...domain.value_objects import Email, Name, Password
 from ..orm.user import UserModel
 
 
@@ -26,30 +27,30 @@ class UserRepository(IUserRepository):
         query = select(UserModel).where(UserModel.email == email)
         result = await self.session.execute(query)
         model = result.scalars().first()
-        
+
         if not model:
             return None
-            
+
         return User(
             id=model.id,
             name=Name(model.name),
             email=Email(model.email),
-            password=Password(model.password)
+            password=Password(model.password),
         )
 
     async def find_by_id(self, id: str) -> Optional[User]:
         query = select(UserModel).where(UserModel.id == id)
         result = await self.session.execute(query)
         model = result.scalars().first()
-        
+
         if not model:
             return None
-            
+
         return User(
             id=model.id,
             name=Name(model.name),
             email=Email(model.email),
-            password=Password(model.password)
+            password=Password(model.password),
         )
 
     async def update(self, user: User) -> None:

@@ -1,6 +1,8 @@
 import dataclasses
+
 from ..value_objects import Price
 from .product import Product
+
 
 @dataclasses.dataclass
 class OrderItem:

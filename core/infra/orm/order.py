@@ -11,7 +11,9 @@ class OrderModel(Base):
     user_id = Column(String, ForeignKey("users.id"))
     total_price = Column(Float, nullable=False)
     order_date = Column(DateTime, nullable=False)
-    status = Column(String, default='Processando')
+    status = Column(String, default="Processando")
 
     user = relationship("UserModel", back_populates="orders")
-    items = relationship("OrderItemModel", back_populates="order", cascade="all, delete-orphan")
+    items = relationship(
+        "OrderItemModel", back_populates="order", cascade="all, delete-orphan"
+    )

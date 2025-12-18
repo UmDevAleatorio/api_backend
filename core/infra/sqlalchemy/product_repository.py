@@ -1,10 +1,11 @@
 from typing import List, Optional
-from sqlalchemy.future import select
+
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
 
 from ...domain.entities.product import Product
-from ...domain.value_objects import Name, Photo, Price
 from ...domain.repositories.i_product_repository import IProductRepository
+from ...domain.value_objects import Name, Photo, Price
 from ..orm.product import ProductModel
 
 
@@ -28,24 +29,24 @@ class ProductRepository(IProductRepository):
         query = select(ProductModel).where(ProductModel.id == id)
         result = await self.session.execute(query)
         model = result.scalars().first()
-        
+
         if not model:
             return None
-            
+
         return Product(
             id=model.id,
             name=Name(model.name),
             price=Price(model.price),
             photo=Photo(model.photo),
             stock=model.stock,
-            user_id=model.user_id
+            user_id=model.user_id,
         )
 
     async def find_all(self) -> List[Product]:
         query = select(ProductModel)
         result = await self.session.execute(query)
         models = result.scalars().all()
-        
+
         return [
             Product(
                 id=m.id,
@@ -53,7 +54,7 @@ class ProductRepository(IProductRepository):
                 price=Price(m.price),
                 photo=Photo(m.photo),
                 stock=m.stock,
-                user_id=m.user_id
+                user_id=m.user_id,
             )
             for m in models
         ]

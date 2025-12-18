@@ -9,7 +9,7 @@ class OrderItemModel(Base):
 
     order_id = Column(String, ForeignKey("orders.id"), primary_key=True)
     product_id = Column(String, ForeignKey("products.id"), primary_key=True)
-    
+
     quantity = Column(Integer, nullable=False)
     unit_price = Column(Float, nullable=False)
 

@@ -3,6 +3,7 @@ from typing import List, Optional
 
 from ..entities.product import Product
 
+
 class IProductRepository(ABC):
     @abstractmethod
     async def save(self, product: Product) -> None:

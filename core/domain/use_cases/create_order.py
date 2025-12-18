@@ -7,6 +7,7 @@ from ..repositories.i_order_repository import IOrderRepository
 from ..repositories.i_product_repository import IProductRepository
 from ..repositories.i_user_repository import IUserRepository
 
+
 @dataclasses.dataclass
 class CreateOrder:
     user_repository: IUserRepository
@@ -14,7 +15,9 @@ class CreateOrder:
     order_repository: IOrderRepository
 
     # items_data é uma lista de tuplas (product_id, quantity)
-    async def execute(self, order_id: str, user_id: str, items_data: List[Tuple[str, int]]) -> Order:
+    async def execute(
+        self, order_id: str, user_id: str, items_data: List[Tuple[str, int]]
+    ) -> Order:
         # 1. Valida Usuário
         user = await self.user_repository.find_by_id(user_id)
         if not user:
@@ -27,11 +30,13 @@ class CreateOrder:
             product = await self.product_repository.find_by_id(product_id)
             if not product:
                 raise ValueError(f"Product with id {product_id} not found")
-            
-            # Valida e baixa estoque na memória (o método decrease_stock que criamos na Entidade)
-            # Nota: Em um sistema real, isso precisaria de transações de banco de dados para evitar condição de corrida
+
+            # Valida e baixa estoque na memória (o método decrease_stock que criamos na
+            # Entidade)
+            # Nota: Em um sistema real, isso precisaria de transações de banco de dados
+            # para evitar condição de corrida
             updated_product = product.decrease_stock(quantity)
-            
+
             # Atualiza o produto no banco com o novo estoque
             await self.product_repository.update(updated_product)
 
@@ -40,16 +45,13 @@ class CreateOrder:
                 product_id=product.id,
                 quantity=quantity,
                 unit_price=product.price,
-                product=updated_product
+                product=updated_product,
             )
             order_items.append(item)
 
-        # 3. Cria o Pedido (o cálculo do total é feito automaticamente na entidade Order)
-        order = Order.create(
-            id=order_id,
-            user_id=user_id,
-            items=order_items
-        )
+        # 3. Cria o Pedido (o cálculo do total é feito automaticamente na entidade
+        #  Order)
+        order = Order.create(id=order_id, user_id=user_id, items=order_items)
 
         # 4. Salva o Pedido
         await self.order_repository.save(order)

@@ -1,18 +1,20 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordRequestForm
 from typing import Any
 
-from core.factories.use_case_factory import UseCaseFactory
+from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordRequestForm
+
 from api.dependencies import get_use_case_factory
-from core.security import create_access_token, verify_password, get_password_hash
 from api.schemas.user_schemas import LoginResponse, UserCreate, UserResponse
+from core.factories.use_case_factory import UseCaseFactory
+from core.security import create_access_token, get_password_hash, verify_password
 
 router = APIRouter()
+
 
 @router.post("/login", response_model=LoginResponse)
 async def login(
     form_data: OAuth2PasswordRequestForm = Depends(),
-    factory: UseCaseFactory = Depends(get_use_case_factory)
+    factory: UseCaseFactory = Depends(get_use_case_factory),
 ) -> Any:
     find_user = factory.create_find_user_by_email()
     user = await find_user.execute(form_data.username)
@@ -29,27 +31,27 @@ async def login(
 
     # 3. Gera Token
     access_token = create_access_token(data={"sub": user.id})
-    
+
     return {
         "access_token": access_token,
         "token_type": "bearer",
         "user_id": user.id,
-        "name": user.name.value
+        "name": user.name.value,
     }
 
-@router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
+
+@router.post(
+    "/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED
+)
 async def register(
-    user_data: UserCreate,
-    factory: UseCaseFactory = Depends(get_use_case_factory)
+    user_data: UserCreate, factory: UseCaseFactory = Depends(get_use_case_factory)
 ):
     register_user = factory.create_register_user()
     try:
         hashed_password = get_password_hash(user_data.password)
-        
+
         new_user = await register_user.execute(
-            name=user_data.name,
-            email=user_data.email,
-            password=hashed_password 
+            name=user_data.name, email=user_data.email, password=hashed_password
         )
         return new_user
     except ValueError as e:

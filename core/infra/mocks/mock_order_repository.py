@@ -20,7 +20,7 @@ class MockOrderRepository(IOrderRepository):
     async def update(self, order: Order) -> None:
         if order.id in self.orders:
             self.orders[order.id] = order
-            
+
     async def delete(self, id: str) -> None:
         if id in self.orders:
             del self.orders[id]

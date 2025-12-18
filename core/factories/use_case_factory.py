@@ -2,33 +2,33 @@ from typing import Optional
 
 from core.domain.repositories import (
     IOrderRepository,
-    IUserRepository,
     IProductRepository,
+    IUserRepository,
 )
 from core.domain.use_cases import (
+    # Order Use Cases
+    CreateOrder,
+    # Product Use Cases
+    CreateProduct,
+    DeleteOrder,
+    DeleteProduct,
     # User Use Cases
     DeleteUser,
+    FindAllProducts,
+    FindOrdersByUser,
+    FindProductById,
     FindUser,
     FindUserByEmail,
     LoginUser,
     RegisterUser,
-    UpdateUser,
-    # Product Use Cases
-    CreateProduct,
-    DeleteProduct,
-    FindAllProducts,
-    FindProductById,
-    UpdateProduct,
-    # Order Use Cases
-    CreateOrder,
-    DeleteOrder,
-    FindOrdersByUser,
     UpdateOrder,
+    UpdateProduct,
+    UpdateUser,
 )
 from core.infra.mocks import (
     MockOrderRepository,
-    MockUserRepository,
     MockProductRepository,
+    MockUserRepository,
 )
 
 
@@ -40,9 +40,7 @@ class UseCaseFactory:
         order_repository: Optional[IOrderRepository] = None,
     ):
         self.user_repository = user_repository or MockUserRepository()
-        self.product_repository = (
-            product_repository or MockProductRepository()
-        )
+        self.product_repository = product_repository or MockProductRepository()
         self.order_repository = order_repository or MockOrderRepository()
 
     # --- USER ---
@@ -90,12 +88,12 @@ class UseCaseFactory:
 
     def create_find_orders_by_user(self) -> FindOrdersByUser:
         return FindOrdersByUser(repository=self.order_repository)
-    
+
     def create_delete_order(self) -> DeleteOrder:
         return DeleteOrder(
             order_repository=self.order_repository,
-            product_repository=self.product_repository
+            product_repository=self.product_repository,
         )
-        
+
     def create_update_order(self) -> UpdateOrder:
         return UpdateOrder(repository=self.order_repository)
